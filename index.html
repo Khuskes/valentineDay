@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Valentine Surprise ❤️</title>
+
+  <!-- Mobile Optimization -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 420px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      line-height: 1.4;
+      margin-bottom: 25px;
+    }
+
+    button {
+      width: 100%;
+      max-width: 280px;
+      padding: 14px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      margin: 10px auto;
+      display: block;
+    }
+
+    .yes {
+      background: #fff;
+      color: #ff4b6e;
+      font-weight: bold;
+    }
+
+    .no {
+      background: #ff4b6e;
+      color: white;
+      position: absolute;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Floating Hearts */
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      font-size: 18px;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-110vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    /* Fireworks */
+    .firework {
+      position: absolute;
+      font-size: 30px;
+      animation: explode 1s infinite;
+    }
+
+    @keyframes explode {
+      0% { transform: scale(0.5); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background Music -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Firework Sound -->
+  <audio id="fireSound">
+    <source src="https://www.soundjay.com/explosion/sounds/firework-explosion-01.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Page 1 -->
+  <div class="container" id="page1">
+    <h1>Want to know about something? 👀</h1>
+    <button class="yes" onclick="goToPage2()">Yes</button>
+    <button class="yes" onclick="goToPage2()">Yes of course</button>
+  </div>
+
+  <!-- Page 2 -->
+  <div class="container hidden" id="page2">
+    <h1>Do you know about the person I love so much? ❤️</h1>
+    <button class="yes" onclick="revealLove()">Yes</button>
+    <button class="yes" onclick="revealLove()">No</button>
+  </div>
+
+  <!-- Page 3 -->
+  <div class="container hidden" id="page3">
+    <h1>Obviously it has to be you sweetheart 💖</h1>
+  </div>
+
+  <!-- Page 4 -->
+  <div class="container hidden" id="page4">
+    <h1>Will you be my Valentine for the rest of our lives? 💍</h1>
+    <button class="yes" onclick="finalPage()">Hell yess 😍</button>
+    <button class="no" id="noBtn">Not interested 🙄</button>
+  </div>
+
+  <!-- Page 5 -->
+  <div class="container hidden" id="page5">
+    <h1>
+      Love You So So Much ❤️<br><br>
+      Thank you for choosing me 🥹💞<br><br>
+      ~ Ankush
+    </h1>
+  </div>
+
+  <script>
+    const bgMusic = document.getElementById("bgMusic");
+    bgMusic.volume = 0.3;
+
+    // Autoplay fix for mobile
+    document.addEventListener("click", () => {
+      bgMusic.play();
+    }, { once: true });
+
+    function goToPage2() {
+      page1.classList.add("hidden");
+      page2.classList.remove("hidden");
+    }
+
+    function revealLove() {
+      page2.classList.add("hidden");
+      page3.classList.remove("hidden");
+      playFireworks();
+
+      setTimeout(() => {
+        page3.classList.add("hidden");
+        page4.classList.remove("hidden");
+      }, 5000);
+    }
+
+    function finalPage() {
+      page4.classList.add("hidden");
+      page5.classList.remove("hidden");
+    }
+
+    function playFireworks() {
+      bgMusic.volume = 0.15;
+      document.getElementById("fireSound").play();
+
+      for (let i = 0; i < 15; i++) {
+        const fw = document.createElement("div");
+        fw.className = "firework";
+        fw.innerHTML = "🎆";
+        fw.style.left = Math.random() * window.innerWidth + "px";
+        fw.style.top = Math.random() * window.innerHeight + "px";
+        document.body.appendChild(fw);
+        setTimeout(() => fw.remove(), 1000);
+      }
+
+      setTimeout(() => {
+        bgMusic.volume = 0.3;
+      }, 2000);
+    }
+
+    // Floating hearts
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(createHeart, 700);
+
+    // Runaway "Not Interested" button (mobile + desktop)
+    const noBtn = document.getElementById("noBtn");
+
+    function moveNoButton() {
+      const x = Math.random() * (window.innerWidth - 120);
+      const y = Math.random() * (window.innerHeight - 60);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    document.addEventListener("mousemove", (e) => {
+      if (!noBtn || noBtn.classList.contains("hidden")) return;
+      const rect = noBtn.getBoundingClientRect();
+      if (
+        e.clientX > rect.left - 40 &&
+        e.clientX < rect.right + 40 &&
+        e.clientY > rect.top - 40 &&
+        e.clientY < rect.bottom + 40
+      ) {
+        moveNoButton();
+      }
+    });
+
+    noBtn.addEventListener("touchstart", moveNoButton);
+  </script>
+
+</body>
+</html>

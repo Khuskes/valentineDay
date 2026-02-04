@@ -98,6 +98,10 @@ button:hover {
   box-shadow: 0 0 25px rgba(255,255,255,0.9);
   margin-top: 20px;
 }
+  #photo {
+  transition: opacity 0.8s ease-in-out;
+}
+
 </style>
 </head>
 
@@ -157,28 +161,34 @@ function reveal() {
 }
 
 /* ✅ CASE-SENSITIVE PHOTO FIX */
-const photos = [
-  "photo1.JPG",
-  "photo2.jpg",
-  "photo3.jpg",
-  "photo4.JPG",
-  "photo5.jpg"
-];
-
-let photoIndex = 0;
-
 function startPhotos() {
-  setInterval(() => {
-    photoIndex = (photoIndex + 1) % photos.length;
-    const img = document.getElementById("photo");
-img.style.opacity = 0;
+  const img = document.getElementById("photo");
 
-setTimeout(() => {
-  img.src = photos[photoIndex];
-  img.style.opacity = 1;
-}, 400);
-  }, 5000);
+  const photos = [
+    "photo1.JPG",
+    "photo2.jpg",
+    "photo3.jpg",
+    "photo4.JPG",
+    "photo5.jpg"
+  ];
+
+  let delay = 0;
+
+  photos.forEach((src) => {
+    setTimeout(() => {
+      img.style.opacity = 0;
+
+      setTimeout(() => {
+        img.src = src;
+        img.style.opacity = 1;
+      }, 400);
+
+    }, delay);
+
+    delay += 5000;
+  });
 }
+
 
 /* Runaway button */
 const noBtn = document.getElementById("noBtn");
@@ -198,7 +208,7 @@ setInterval(() => {
   heart.style.left = Math.random() * 100 + "vw";
   document.body.appendChild(heart);
   setTimeout(() => heart.remove(), 6000);
-}, 300);
+}, 300); 
 
 /* Sparkles */
 setInterval(() => {
